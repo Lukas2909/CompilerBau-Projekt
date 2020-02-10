@@ -1,3 +1,5 @@
+// Creator: 8989700
+
 public class Visitor1 implements Visitor {
     private int nextPosition;
 
@@ -11,7 +13,7 @@ public class Visitor1 implements Visitor {
         node.position=nextPosition;
 
         // Handelt es sich um ein Epsilon, wird nullable auf true gesetzt, first- und lastpos bleibt leer
-        if(node.symbol=="epsilon"){
+        if(node.symbol.equals("epsilon")){
             // Nullable
             node.nullable= true;
         }
@@ -31,7 +33,7 @@ public class Visitor1 implements Visitor {
     public void visit(BinOpNode node)
     {
         // Verhalten für Konkatenation
-        if(node.operator=="°"){
+        if(node.operator.equals("°")){
             // Nullable
             node.nullable=((((SyntaxNode)node.left).nullable)&&(((SyntaxNode)node.right).nullable));
 
@@ -54,7 +56,7 @@ public class Visitor1 implements Visitor {
             }
         }
         // Verhalten für Alternative
-        else if(node.operator=="|")
+        else if(node.operator.equals("|"))
         {
             // Nullable
             node.nullable=((((SyntaxNode)node.left).nullable)||(((SyntaxNode)node.right).nullable));
@@ -75,7 +77,7 @@ public class Visitor1 implements Visitor {
     public void visit(UnaryOpNode node)
     {
         // Verhalten für Kleenesche Hülle
-        if(node.operator=="*"){
+        if(node.operator.equals("*")){
             // Nullable
             node.nullable=true;
 
@@ -86,7 +88,7 @@ public class Visitor1 implements Visitor {
             node.lastpos.addAll(((SyntaxNode)node.subNode).lastpos);
         }
         // Verhalten für Positive Hülle
-        else if(node.operator=="+")
+        else if(node.operator.equals("+"))
         {
             // Nullable
             node.nullable=(((SyntaxNode)node.subNode).nullable);
@@ -98,7 +100,7 @@ public class Visitor1 implements Visitor {
             node.lastpos.addAll(((SyntaxNode)node.subNode).lastpos);
         }
         // Verhalten für Option
-        else if(node.operator=="?")
+        else if(node.operator.equals("?"))
         {
             // Nullable
             node.nullable=true;
@@ -112,5 +114,10 @@ public class Visitor1 implements Visitor {
         else{
             throw new RuntimeException("Invalid Operator! UnaryOpNodes support only Kleene closure *, Positive closure + or option ?");
         }
+    }
+
+    // Optionale Methode zum Durchlaufen eines Baumes
+    public void visitTree(Visitable root){
+        DepthFirstIterator.traverse(root, this);
     }
 }

@@ -15,6 +15,16 @@ public class Visitor1Test {
     }
 
     @Test
+    void runTestWithTree1OptionalMethod()                                 // (a|b)*abb#
+    {
+        Visitable rootBasic = generateBasicTree1();
+        Visitable rootTarget = generateExpectedTree1();
+
+        new Visitor1().visitTree(rootBasic);
+        Assertions.assertEquals(equals(rootTarget,rootBasic),true);
+    }
+
+    @Test
     void runTestWithTree2()                                 // a(a|c)b+(c|d)*a
     {
         Visitable rootBasic = generateBasicTree2();
